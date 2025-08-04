@@ -3,6 +3,7 @@ services:
     name: danyboy99-banking-system-api
     env: node
     plan: free
-    startcommand: npm run start
+    buildCommand: npm run build
+    startCommand: npm run start
     repo: https://github.com/danyboy99/cv_chat_mcp
     branch: main
