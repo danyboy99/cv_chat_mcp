@@ -1,10 +1,6 @@
 # Node modules
 node_modules/
 
-# TypeScript output
-dist/
-build/
-
 # Logs
 logs/
 *.log
@@ -27,8 +23,6 @@ Thumbs.db
 # Optional: Ignore coverage output (if you're using testing tools like Jest)
 coverage/
 
-# Optional: Ignore local Render or deployment files
-render.yaml
 
 # Optional: Ignore package lock if using a different lock manager
 # package-lock.json
