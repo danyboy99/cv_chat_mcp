@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .upload-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px dashed #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #4f46e5;
+            background: #f1f5f9;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .file-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .question-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .question-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-section {
+            background: #1f2937;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            min-height: 200px;
+            display: none;
+        }
+
+        .response-header {
+            color: #10b981;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .response-text {
+            color: #f9fafb;
+            font-size: 1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: #10b981;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-indicator {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> CV Chat Assistant</h1>
+            <p>Upload your resume and ask questions about your experience</p>
+        </div>
+
+        <div class="main-content">
+            <form id="chatForm" enctype="multipart/form-data">
+                <div class="upload-section">
+                    <div class="form-group">
+                        <label for="resume"><i class="fas fa-file-upload"></i> Upload Your Resume (.docx)</label>
+                        <input type="file" id="resume" name="resume" class="file-input" accept=".docx" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="question"><i class="fas fa-question-circle"></i> Ask a Question About Your Resume</label>
+                        <textarea id="question" name="question" class="question-input" 
+                                placeholder="e.g., What is my work experience? What skills do I have? What was my role at my last job?" 
+                                required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        Ask Question
+                    </button>
+                </div>
+            </form>
+
+            <div class="loading" id="loadingIndicator" style="display: none;">
+                <div class="spinner"></div>
+                Processing your request...
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-indicator" id="successMessage"></div>
+
+            <div class="response-section" id="responseSection">
+                <div class="response-header">
+                    <i class="fas fa-brain"></i>
+                    AI Response:
+                </div>
+                <div class="response-text" id="responseText"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const resumeFile = document.getElementById('resume').files[0];
+            const question = document.getElementById('question').value;
+            
+            if (!resumeFile || !question) {
+                showError('Please upload a resume file and enter a question.');
+                return;
+            }
+            
+            formData.append('resume', resumeFile);
+            formData.append('question', question);
+            
+            // Show loading state
+            showLoading(true);
+            hideMessages();
+            
+            try {
+                const response = await fetch('/api/chat/ask', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                showLoading(false);
+                
+                if (response.ok && result.status === 'success') {
+                    showSuccess('Response generated and sent to your email!');
+                    displayTypingResponse(result.response);
+                } else {
+                    showError(result.error || result.emailError || 'An error occurred while processing your request.');
+                }
+                
+            } catch (error) {
+                showLoading(false);
+                showError('Network error: ' + error.message);
+            }
+        });
+        
+        function displayTypingResponse(text) {
+            const responseSection = document.getElementById('responseSection');
+            const responseText = document.getElementById('responseText');
+            
+            responseSection.style.display = 'block';
+            responseText.innerHTML = '';
+            
+            let index = 0;
+            const typingSpeed = 30; // milliseconds per character
+            
+            function typeCharacter() {
+                if (index < text.length) {
+                    responseText.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(typeCharacter, typingSpeed);
+                } else {
+                    // Add blinking cursor at the end
+                    responseText.innerHTML += '<span class="typing-cursor"></span>';
+                }
+            }
+            
+            typeCharacter();
+        }
+        
+        function showLoading(show) {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (show) {
+                loadingIndicator.style.display = 'flex';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            } else {
+                loadingIndicator.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Ask Question';
+            }
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+        
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('responseSection').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

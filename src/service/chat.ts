@@ -1,0 +1,19 @@
+import axios from "axios";
+
+export const generatedResponse = async (prompt: string) => {
+  const response = await axios.post(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      model: "openai/gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data.choices[0].message.content;
+};

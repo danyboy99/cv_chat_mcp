@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# TypeScript output
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Optional: Ignore coverage output (if you're using testing tools like Jest)
+coverage/
+
+# Optional: Ignore local Render or deployment files
+render.yaml
+
+# Optional: Ignore package lock if using a different lock manager
+# package-lock.json
+# yarn.lock
+
+# Ignore compiled EJS if you render to static files (not common)
+# views/*.html
