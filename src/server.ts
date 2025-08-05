@@ -23,7 +23,7 @@ app.use("/api/chat", chatRoutes);
 
 // Root route redirect to chat interface
 app.get("/", (_req, res) => {
-  res.redirect("/api/chat/view");
+  res.render("chat", { title: "CV Chat Assistant" });
 });
 
 // configure live port (avoiding Chrome's unsafe port 6000)
