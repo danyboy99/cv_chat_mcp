@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  cv-chat-app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      - /app/node_modules
+      # Mount uploads directory
+      - uploads_dev_data:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads_dev_data:

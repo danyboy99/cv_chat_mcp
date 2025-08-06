@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  cv-chat-app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Add your environment variables here
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - mailtrap_Api_key=${MAILTRAP_API_KEY}
+    volumes:
+      # Mount uploads directory to persist uploaded files
+      - uploads_data:/app/uploads
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  uploads_data:
